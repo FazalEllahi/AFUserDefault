@@ -13,14 +13,12 @@ import Foundation
     var container = UserDefaults.standard
     var wrappedValue: T {
         set {
-            let defaults = UserDefaults()
             let enodedVal = try? JSONEncoder().encode(newValue)
             container.set(enodedVal, forKey: key)
             container.synchronize()
         }
         get {
-            let defaults = UserDefaults()
-            let value = defaults.value(forKey: key)
+            let value = container.value(forKey: key)
             guard let _ = value else {return defaultValue}
             let data = try? JSONDecoder().decode(T.self, from: value as! Data)
             return data ?? defaultValue
